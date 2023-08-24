@@ -1,16 +1,14 @@
 #!/usr/bin/python3
 """app.py to connect API"""
-import os
-from flask import Flask, Blueprint, jsonify, make_response
-from flask_cors import CORS
-from os import getenv
-from api.v1.views import app_views
+from flask import Flask, jsonify
 from models import storage
+from api.v1.views import app_views
+from os import getenv
+from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, ressources={r"/*:": {"origins:" "0.0.0.0"}})
 app.register_blueprint(app_views)
-
+CORS(app, ressources={r"/*": {"origins": "0.0.0.0"}})
 
 @app.teardown_appcontext
 def tear_appcontext(code):
