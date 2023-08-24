@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""app"""
+"""app.py to connect API"""
 import os
 from flask import Flask, Blueprint, jsonify, make_response
 from flask_cors import CORS
@@ -20,6 +20,7 @@ def tear_appcontext(code):
 
 @app.errorhandler(404)
 def page_not_found(error):
+    """errorhandle : No found"""
     return make_response(jsonify({"error": "Not found"}), 404)
 
 
