@@ -8,11 +8,11 @@ from api.v1.views import app_views
 from models import storage
 
 app = Flask(__name__)
-cors = CORS(app, ressource={"/*:": {"origins:" "0.0.0.0"}})
+cors = CORS(app, ressources={"/*:": {"origins:" "0.0.0.0"}})
 app.register_blueprint(app_views)
 
 
-@app.tearedown_appcontext
+@app.teardown_appcontext
 def tear_appcontext(code):
     """teardown_appcontext"""
     storage.close()
