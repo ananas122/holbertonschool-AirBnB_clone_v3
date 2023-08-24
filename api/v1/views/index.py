@@ -24,4 +24,3 @@ def stats():
     }
 
     return jsonify(data)
-    
