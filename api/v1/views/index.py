@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""""""
+"""definitions of API """
 from api.v1.views import app_views
 from flask import jsonify
 from models import storage
@@ -30,4 +30,3 @@ def stats():
     }
 
     return jsonify(data)
-
