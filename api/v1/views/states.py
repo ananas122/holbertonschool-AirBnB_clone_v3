@@ -10,26 +10,26 @@ from models.state import State
 def get_states():
     """Récupère la liste de tous les objets State"""
     stateList = []
-    for state in storage.all("State").values():
+    for state in storage.all(State).values():
         stateList.append(state.to_dict())
     return jsonify(stateList)
 
 
-@app_views.route('/states/<string:state_id>', methods=['GET'],
+@app_views.route('/states/<state_id>', methods=['GET'],
                  strict_slashes=False)
 def get_state(state_id):
     """Récupère un objet State"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
     return jsonify(state.to_dict())
 
 
-@app_views.route('/states/<string:state_id>', methods=['DELETE'],
+@app_views.route('/states/<state_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_state(state_id):
     """Supprime un objet State"""
-    state = storage.get("State", state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
     state.delete()
