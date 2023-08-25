@@ -1,31 +1,41 @@
 #!/usr/bin/python3
-"""app.py to connect API"""
-from flask import Flask, jsonify, make_response
-from models import storage
+"""
+Module starting the API
+"""
 from api.v1.views import app_views
+from flask import Flask, make_response, jsonify
+from models import storage
 from os import getenv
 from flask_cors import CORS
 
+
 app = Flask(__name__)
+cors = CORS(app, resources={r"/api/v1/*": {"origins": "0.0.0.0"}})
+
+env_host = getenv('HBNB_API_HOST', '0.0.0.0')
+env_port = getenv('HBNB_API_PORT', 5000)
+
 app.register_blueprint(app_views)
-CORS(app, ressources={r"/*": {"origins": "0.0.0.0"}})
+CORS(app, ressources={"/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
-def tear_appcontext(code):
-    """teardown_appcontext"""
+def close(self):
+    """Clossing session method"""
     storage.close()
 
 
 @app.errorhandler(404)
-def page_not_found(error):
-    """errorhandle : No found"""
+def not_found(error):
+    """
+    Error handler for 404 errors that returns a JSON-formatted
+    404 status code response
+    """
     return make_response(jsonify({"error": "Not found"}), 404)
 
 
 if __name__ == "__main__":
-    app.run(
-        host=getenv('HBNB_API_HOST', '0.0.0.0'),
-        port=getenv('HBNB_API_PORT', 5000),
-        threaded=True
-    )
+    """
+    Main flask app
+    """
+    app.run(host=env_host, port=env_port, threaded=True)
