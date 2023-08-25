@@ -22,24 +22,8 @@ def get_state(state_id):
     state = storage.get("State", state_id)
     if state is None:
         abort(404)
-    return jsonify(state.to_dict())
-
-
-@app_views.route('/states/', methods=['POST'],
-                strict_slashes=False)
-def create_state():
-    """Crée un nouvel objet State"""
-    # Récupère les données JSON de la requête
-    http_body_request = request.get_json()
-    if http_body_request is None:
-        abort(400, 'Not a JSON')
-    if "name" not in http_body_request:
-        abort(400, 'Missing name')
-    # Crée un nouvel objet State avec les données JSON fournies
-    new_state = State(name=http_body_request["name"])
-    storage.new(new_state)
-    storage.save()
-    return jsonify(new_state.to_dict()), 201
+    else:
+        return jsonify(state.to_dict())
 
 
 @app_views.route('/states/<string:state_id>', methods=['DELETE'],
@@ -53,6 +37,19 @@ def delete_state(state_id):
     storage.save()
     return make_response(jsonify({}), 200)
 
+@app_views.route('/states/', methods=['POST'],
+                strict_slashes=False)
+def create_state():
+    """Crée un nouvel objet State"""
+    http_body_request = request.get_json()
+    if http_body_request is None:
+        abort(400, 'Not a JSON')
+    if "name" not in http_body_request:
+        abort(400, 'Missing name')
+    new_state = State(name=http_body_request["name"])
+    storage.new(new_state)
+    storage.save()
+    return jsonify(new_state.to_dict()), 201
 
 @app_views.route("/states/", methods=["POST"],
                 strict_slashes=False)
