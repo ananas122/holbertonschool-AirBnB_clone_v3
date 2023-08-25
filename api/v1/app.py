@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, ressources={r"/*": {"origins": "0.0.0.0"}})
 
+
 @app.teardown_appcontext
 def tear_appcontext(code):
     """teardown_appcontext"""
