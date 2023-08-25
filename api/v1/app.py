@@ -16,6 +16,7 @@ env_host = getenv('HBNB_API_HOST', '0.0.0.0')
 env_port = getenv('HBNB_API_PORT', 5000)
 
 app.register_blueprint(app_views)
+CORS(app, ressources={"/*": {"origins": "0.0.0.0"}})
 
 
 @app.teardown_appcontext
