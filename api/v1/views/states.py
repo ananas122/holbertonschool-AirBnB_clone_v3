@@ -19,7 +19,7 @@ def get_states():
                 strict_slashes=False)
 def get_state(state_id):
     """Récupère un objet State"""
-    state = storage.get(State, state_id)
+    state = storage.get("State", state_id)
     if state is None:
         abort(404)
     return jsonify(state.to_dict())
@@ -46,7 +46,7 @@ def create_state():
                 strict_slashes=False)
 def delete_state(state_id):
     """Supprime un objet State"""
-    state = storage.get(State, state_id)
+    state = storage.get("State", state_id)
     if state is None:
         abort(404)
     state.delete()
