@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ import app_views and create route to amenity """
-from api.v1.views import app_views
 from flask import jsonify, request, abort, make_response
 from models import storage
+from api.v1.views import app_views
 from models.amenity import Amenity
 
 
@@ -10,10 +10,10 @@ from models.amenity import Amenity
 def get_amenities():
     """ return the amenities in json form """
     if request.method == 'GET':
-        response_list = []
+        amenity_list = []
         for amenity in storage.all(Amenity).values():
-            response_list.append(amenity.to_dict())
-        return jsonify(response_list)
+            amenity_list.append(amenity.to_dict())
+        return jsonify(amenity_list)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'])
@@ -30,9 +30,9 @@ def get_amenity_by_id(amenity_id):
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
 def delete_amenity_by_id(amenity_id):
     """ deletes an amenity by id and returns an empty dictionary"""
-    amenity_deleted = storage.get(Amenity, amenity_id)
-    if amenity_deleted is not None:
-        storage.delete(amenity_deleted)
+    http_body_request = storage.get(Amenity, amenity_id)
+    if http_body_request is not None:
+        storage.delete()
         storage.save()
         return make_response(jsonify({}), 200)
     else:
