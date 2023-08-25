@@ -40,10 +40,7 @@ class FileStorage:
             type(id) is str and cls in classes:
                 key = cls + "." + id
                 obj = self.__objects.get(key, None)
-                if obj is None:
-                key = cls.__name__ + '.' + id
-                obj = self.__objects.get(key, None)
-            return obj
+                return obj
         else:
             return None
 
