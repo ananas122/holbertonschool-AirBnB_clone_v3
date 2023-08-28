@@ -29,6 +29,7 @@ def teardown_appcontext(error):
 # Handle 404 errors by returning a JSON response
 @app.errorhandler(404)
 def page_not_found(error):
+    """page not found"""
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
@@ -36,4 +37,3 @@ if __name__ == "__main__":
     # Start the Flask app
     app.run(host=os.getenv('HBNB_API_HOST', '0.0.0.0'),
             port=int(os.getenv('HBNB_API_PORT', '5000')))
-            
