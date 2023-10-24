@@ -27,20 +27,19 @@ class FileStorage:
     def all(self, cls=None):
         """returns the dictionary __objects"""
         if cls is not None:
-            new_dict = {}
-            for key, value in self.__objects.items():
-                if cls == value.__class__ or cls == value.__class__.__name__:
-                    new_dict[key] = value
-            return new_dict
+            return {
+                key: value
+                for key, value in self.__objects.items()
+                if cls in [value.__class__, value.__class__.__name__]
+            }
         return self.__objects
 
     def get(self, cls, id):
         """ Method to retrieve one object: """
         if cls is not None and type(cls) is str and id is not None and\
-            type(id) is str and cls in classes:
-                key = cls + "." + id
-                obj = self.__objects.get(key, None)
-                return obj
+                type(id) is str and cls in classes:
+            key = f"{cls}.{id}"
+            return self.__objects.get(key, None)
         else:
             return None
 
@@ -51,14 +50,12 @@ class FileStorage:
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         if obj is not None:
-            key = obj.__class__.__name__ + "." + obj.id
+            key = f"{obj.__class__.__name__}.{obj.id}"
             self.__objects[key] = obj
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
-        json_objects = {}
-        for key in self.__objects:
-            json_objects[key] = self.__objects[key].to_dict()
+        json_objects = {key: self.__objects[key].to_dict() for key in self.__objects}
         with open(self.__file_path, 'w') as f:
             json.dump(json_objects, f)
 
@@ -75,7 +72,7 @@ class FileStorage:
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
+            key = f'{obj.__class__.__name__}.{obj.id}'
             if key in self.__objects:
                 del self.__objects[key]
 

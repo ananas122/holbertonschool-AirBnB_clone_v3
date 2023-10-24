@@ -32,11 +32,9 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(HBNB_MYSQL_USER,
-                                             HBNB_MYSQL_PWD,
-                                             HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB))
+        self.__engine = create_engine(
+            f'mysql+mysqldb://{HBNB_MYSQL_USER}:{HBNB_MYSQL_PWD}@{HBNB_MYSQL_HOST}/{HBNB_MYSQL_DB}'
+        )
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -47,7 +45,7 @@ class DBStorage:
             if cls is None or cls is classes[clss] or cls is clss:
                 objs = self.__session.query(classes[clss]).all()
                 for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
+                    key = f'{obj.__class__.__name__}.{obj.id}'
                     new_dict[key] = obj
         return (new_dict)
 
@@ -77,13 +75,9 @@ class DBStorage:
 
     def get(self, cls, id):
         """Retrieves an object according to its class and ID."""
-        key = cls.__name__ + "." + id
-        if key in self.all(cls):
-            return self.all(cls)[key]
-        return None
+        key = f"{cls.__name__}.{id}"
+        return self.all(cls)[key] if key in self.all(cls) else None
 
     def count(self, cls=None):
         """Counts the number of objects in storage."""
-        if cls is None:
-            return len(self.all())
-        return len(self.all(cls.__name__))
+        return len(self.all()) if cls is None else len(self.all(cls.__name__))
