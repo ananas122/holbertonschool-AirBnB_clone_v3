@@ -11,12 +11,7 @@ def states():
     """Récupère la liste de tous les objets State"""
     # Récupère tous les objets State de la db
     all_states = storage.all(State).values()
-    # Crée une liste vide pr stocker les obj State convertis en dict
-    state_list = []
-    # Parcourt tous les obj State
-    for state in all_states:
-        # Convertit chaque objet State en dict et l'ajoute à la liste
-        state_list.append(state.to_dict())
+    state_list = [state.to_dict() for state in all_states]
     # Renvoie la liste de dictionnaires en JSON
     return jsonify(state_list)
 
